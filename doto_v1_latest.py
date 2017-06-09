@@ -19,7 +19,7 @@ def if_user_available_remove(user):
             timed_users.remove(auser)
             return True
     return False
-    
+
 # async def print_who():
 #     await client.wait_until_ready()
 #     while not client.is_closed:
@@ -38,12 +38,12 @@ async def check_timers():
         await asyncio.sleep(20)
 
 
-async def msg_format():
-    async with aiohttp.get('https://discordapp.com/api/channels/321781885699358741/messages') as r:
-        js = await r.json()
-        print(str(r.status))
-        print(js)
-            # await client.send_message(channel, js['file'])
+# async def msg_format():
+#     async with aiohttp.get('https://discordapp.com/api/channels/321781885699358741/messages') as r:
+#         js = await r.json()
+#         print(str(r.status))
+#         print(js)
+#             # await client.send_message(channel, js['file'])
 
 class TimedUser:
 
