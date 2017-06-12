@@ -21,24 +21,21 @@ DOTA_CHANNEL_ID = conf['CHANNELS']['DotaChannelID']
 BOT_CHANNEL_ID = conf['CHANNELS']['BotChannelID']
 BOT_TOKEN = conf['BOT']['token']
 ALERT_TEXT = conf['DEFAULT_VALUES']['alertText']
+
 try:
     TIMEOUT_DEFAULT = int(conf['DEFAULT_VALUES']['timeout'])
 except ValueError:
     TIMEOUT_DEFAULT = 60
 
 # client = discord.Client()
-if len(DOTA_CHANNEL_ID) < 0:
+if not DOTA_CHANNEL_ID:
     print('Missing Dota channel id!')
 dota_channel = discord.Object(id=DOTA_CHANNEL_ID)
-if len(BOT_CHANNEL_ID) < 0:
+
+if not BOT_CHANNEL_ID:
     print('Missing Bot channel id!')
 bot_channel = discord.Object(id=BOT_CHANNEL_ID)
-@bot.event
-async def on_ready():
-    print('Logged in as')
-    print(bot.user.name)
-    print(bot.user.id)
-    print('------')
+
 
 def if_user_available_remove(user):
     for auser in timed_users:
@@ -118,7 +115,7 @@ async def dota(ctx, *args):
         time = TIMEOUT_DEFAULT
         print('Time defaulted')
     for arg in args:
-        if time is None:
+        if not time:
             try:
                 time = int(arg)
                 print('Time = ' + arg )
@@ -145,7 +142,7 @@ async def dota(ctx, *args):
 			
 bot.loop.create_task(check_timers())
 # client.loop.create_task(print_who())
-if len(BOT_TOKEN) < 0:
+if not BOT_TOKEN:
     print('Missing Bot token!')
 bot.run(BOT_TOKEN)
 
