@@ -3,6 +3,7 @@ import aiohttp
 import asyncio
 import logging
 import time
+import config
 from discord.ext import commands
 
 description = 'A discord bot'
@@ -14,9 +15,20 @@ logging.basicConfig(level=logging.INFO)
 
 timed_users = []
 
+#Read Config
+conf = config.getConfig()
+DOTA_CHANNEL_ID = conf['CHANNELS']['DotaChannelID']
+BOT_CHANNEL_ID = conf['CHANNELS']['BotChannelID']
+BOT_TOKEN = conf['BOT']['token']
+ALERT_TEXT = conf['DEFAULT_VALUES']['alertText']
+try:
+    TIMEOUT_DEFAULT = int(conf['DEFAULT_VALUES']['timeout'])
+except ValueError:
+    TIMEOUT_DEFAULT = 60
+
 # client = discord.Client()
-dota_channel = discord.Object(id='89274408438353920')
-bot_channel = discord.Object(id='321781885699358741')
+dota_channel = discord.Object(id=DOTA_CHANNEL_ID)
+bot_channel = discord.Object(id=BOT_CHANNEL_ID)
 
 @bot.event
 async def on_ready():
@@ -75,7 +87,7 @@ async def who(ctx):
 @bot.command(description='Alert players.')
 async def alert():
     """Send @mentions to everyone in the !who list."""
-    print_str = 'go ' 
+    print_str = ALERT_TEXT + ' ' 
     for timed_user in timed_users:
         print_str += timed_user.user.mention + ' '
     await bot.say(print_str)
@@ -100,7 +112,7 @@ async def dota(ctx, *args):
     time = None
     note = ''
     if len(args) == 0: 
-        time = 60
+        time = TIMEOUT_DEFAULT
         print('Time defaulted')
     for arg in args:
         if time is None:
@@ -108,7 +120,7 @@ async def dota(ctx, *args):
                 time = int(arg)
                 print('Time = ' + arg )
             except ValueError:
-                time = 60
+                time = TIMEOUT_DEFAULT
                 note += arg + ' '
                 print('Time defaulted')
         else:
@@ -117,7 +129,6 @@ async def dota(ctx, *args):
     #Add the user to the list
     try:
         new_player = TimedUser(user, time, note)
-        print('User created: ' + str(user))
     except Exception:
         bot.say("Wrong type for timeout minutes")
         return
@@ -131,7 +142,7 @@ async def dota(ctx, *args):
 			
 bot.loop.create_task(check_timers())
 # client.loop.create_task(print_who())
-bot.run('MzA5NzAyNzY3NjEyNzg4NzQ2.DBidow.VGf7Wrc60J0iUzTLGyNTFWfpQQc')
+bot.run(BOT_TOKEN)
 
 
 
