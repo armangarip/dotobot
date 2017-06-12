@@ -2,7 +2,9 @@ import configparser
 import os.path
 import sys
 
-f = sys.path[0] + '\\config.ini'
+# fuck you murat
+
+f = sys.path[0] + os.sep + 'config.ini'
 
 def createConfig(config):
     config['BOT'] = {'Token': ''}
@@ -12,7 +14,7 @@ def createConfig(config):
                                 'alertText': 'go'}
     with open(f, 'w+') as configfile:
         config.write(configfile)
-								
+
 def readConfig(config):
     config.read(f)
 
