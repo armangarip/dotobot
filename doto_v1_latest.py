@@ -4,6 +4,7 @@ import asyncio
 import logging
 import time
 import config
+from timed_user import TimedUser
 from discord.ext import commands
 
 description = 'A discord bot'
@@ -55,18 +56,6 @@ async def check_timers():
                 timed_users.remove(timed_user)
                 await bot.say(timed_user.user.name + ' is no longer playing (' + str(len(timed_users)) + '/5) -timeout')
         await asyncio.sleep(20)
-
-
-class TimedUser:
-
-    def __init__(self, user, timeout_mins = 60, note = ''):
-        self.user = user
-        now = time.time()
-        self.timeout = now + (timeout_mins * 60)
-        self.note = note
-
-    def get_remaining_time(self):
-        return int((self.timeout - time.time()) / 60)
 
 
 @bot.command(pass_context=True, description='Who wants to play?')
