@@ -27,9 +27,12 @@ except ValueError:
     TIMEOUT_DEFAULT = 60
 
 # client = discord.Client()
+if len(DOTA_CHANNEL_ID) < 0:
+    print('Missing Dota channel id!')
 dota_channel = discord.Object(id=DOTA_CHANNEL_ID)
+if len(BOT_CHANNEL_ID) < 0:
+    print('Missing Bot channel id!')
 bot_channel = discord.Object(id=BOT_CHANNEL_ID)
-
 @bot.event
 async def on_ready():
     print('Logged in as')
@@ -102,7 +105,7 @@ async def dota(ctx, *args):
     user = ctx.message.author
 	#Remove the user and return if applicable
     if if_user_available_remove(user):
-        await bot.send_message(bot_channel, user.name + ' is no longer playing (' + str(len(timed_users)) + '/5)')
+        await bot.say(user.name + ' is no longer playing (' + str(len(timed_users)) + '/5)')
         return
 	
     #Set default values for time and note
@@ -142,6 +145,8 @@ async def dota(ctx, *args):
 			
 bot.loop.create_task(check_timers())
 # client.loop.create_task(print_who())
+if len(BOT_TOKEN) < 0:
+    print('Missing Bot token!')
 bot.run(BOT_TOKEN)
 
 
